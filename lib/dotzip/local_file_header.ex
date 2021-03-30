@@ -1,6 +1,6 @@
 defmodule Dotzip.LocalFileHeader do
 
-  defp signature() do
+  def signature() do
     << 0x50, 0x4b, 0x03, 0x04 >>
   end
   
@@ -23,13 +23,41 @@ defmodule Dotzip.LocalFileHeader do
   defp purpose_flag({:ok, data, << purpose_flag::binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :purpose_flag, purpose_flag), rest}
   end
-
+  
   defp encode_purpose_flag({:ok, %{ :purpose_flag => purpose_flag } = data, buffer }) do
     {:ok, data, <<buffer::bitstring, purpose_flag::binary-size(2)>> }
   end
 
-  defp compression_method({:ok, data, << compression_method::binary-size(2), rest::bitstring >>}) do
-    {:ok, Map.put(data, :compression_method, compression_method), rest}
+  defp compression_method_type(data) do
+    case data do
+      0 -> :stored
+      1 -> :shrunk
+      2 -> :reduced_factor1
+      3 -> :reduced_factor2
+      4 -> :reduced_factor3
+      5 -> :reduced_factor4
+      6 -> :imploded
+      7 -> :tokenizing
+      8 -> :deflated
+      9 -> :deflate64
+      10 -> :pkware
+      11 -> :reserved
+      12 -> :bzip2
+      13 -> :reserved
+      14 -> :lzma
+      15 -> :reserved
+      16 -> :reserved
+      17 -> :reserved
+      18 -> :terse
+      19 -> :lz77
+      97 -> :wavpack
+      98 -> :ppmd
+    end
+  end
+  
+  defp compression_method({:ok, data, << compression_method::little-size(16), rest::bitstring >>}) do
+    method = compression_method_type(compression_method)
+    {:ok, Map.put(data, :compression_method, method), rest}
   end
 
   defp encode_compression_method({:ok, %{ :compression_method => compression_method } = data, buffer}) do
@@ -44,7 +72,7 @@ defmodule Dotzip.LocalFileHeader do
     {:ok, data, <<buffer::bitstring, last_modification_time::little-size(16)>>}
   end
 
-  defp last_modification_date({:ok, data, << last_modification_date::little-size(16), rest::bitstring >>}) do
+  defp last_modification_date({:ok, data, << last_modification_date::little-binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :last_modification_date, last_modification_date), rest}
   end
 

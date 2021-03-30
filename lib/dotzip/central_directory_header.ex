@@ -1,6 +1,6 @@
 defmodule Dotzip.CentralDirectoryHeader do
 
-  defp signature() do
+  def signature() do
     << 0x50, 0x4b, 0x01, 0x02 >>
   end
   
