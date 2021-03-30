@@ -1,5 +1,18 @@
 # Dotzip
 
+> ZIP is one of the most widely used compressed file formats. It is
+> universally used to aggregate, compress, and encrypt files into a
+> single interoperable container. No specific use or application need
+> is defined by this format and no specific implementation guidance is
+> provided. This document provides details on the storage format for
+> creating ZIP files.  Information is provided on the records and
+> fields that describe what a ZIP file is. -- from [official
+> specification
+> file](https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT)
+
+Note: This project is a work in progress. Please don't use it in
+production.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -35,6 +48,14 @@ Dotzip.decode(file)
  * https://www.loc.gov/preservation/digital/formats/fdd/fdd000362.shtml
  * https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT
  * https://en.wikipedia.org/wiki/ZIP_(file_format)
+
+## Trademarks
+
+> PKWARE, PKZIP, SecureZIP, and PKSFX are registered trademarks of
+> PKWARE, Inc. in the United States and elsewhere.  PKPatchMaker,
+> Deflate64, and ZIP64 are trademarks of PKWARE, Inc.  Other marks
+> referenced within this document appear for identification purposes
+> only and are the property of their respective owners.
 
 ## Notes
 

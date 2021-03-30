@@ -1,25 +1,49 @@
 defmodule Dotzip.CentralDirectoryHeader do
 
+  defp signature() do
+    << 0x50, 0x4b, 0x01, 0x02 >>
+  end
+  
   defp signature(<< 0x50, 0x4b, 0x01, 0x02, rest::bitstring >>) do
     {:ok, %{}, rest}
+  end
+
+  defp encode_signature(data) when is_map(data) do
+    {:ok, data, signature()}
   end
 
   defp version_made({:ok, data, << version::binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :version_made, version), rest}
   end
 
+  defp encode_version_made({:ok, %{ :version_made => version_made } = data, buffer}) do
+    {:ok, data, << buffer::bitstring, version_made::binary-size(2) >>}
+  end
+  
   defp version_needed({:ok, data, << version::binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :version_needed, version), rest}
+  end
+
+  defp encode_version_needed({:ok, %{ :version_needed => version_needed } = data, buffer}) do
+    {:ok, data, << buffer::bitstring, version_needed::binary-size(2) >>}
   end
   
   defp purpose_flag({:ok, data, << purpose_flag::binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :purpose_flag, purpose_flag), rest}
   end
 
+  defp encode_purpose_flag({:ok, %{ :purpose_flag => purpose_flag } = data, buffer}) do
+    {:ok, data, << buffer::bitstring, purpose_flag::binary-size(2) >>}
+  end
+
   defp compression_method({:ok, data, << compression_method::binary-size(2), rest::bitstring >>}) do
     {:ok, Map.put(data, :compression_method, compression_method), rest}
   end
 
+  defp encode_compression_method({:ok, %{ :compression_method => compression_method } = data, buffer}) do
+    {:ok, data, << buffer::bitstring, compression_method::binary-size(2) >>}
+  end
+  
   defp last_modification_time({:ok, data, << last_modification::little-size(16), rest::bitstring >>}) do
     {:ok, Map.put(data, :last_modification_time, last_modification), rest}
   end
@@ -86,8 +110,8 @@ defmodule Dotzip.CentralDirectoryHeader do
     {:ok, Map.put(data, :file_comment, file_comment), r}
   end
   
-  def decode(file) do
-    {:ok, central_directory_header, rest} = signature(file)
+  def decode(data) when is_bitstring(data) do
+    {:ok, central_directory_header, rest} = signature(data)
     |> version_made()
     |> version_needed()
     |> purpose_flag()
@@ -107,6 +131,14 @@ defmodule Dotzip.CentralDirectoryHeader do
     |> file_name()
     |> extra_field()
     |> file_comment()
+  end
+
+  def encode(data) when is_map(data) do
+    encode_signature(data)
+    |> encode_version_made()
+    |> encode_version_needed()
+    |> encode_purpose_flag()
+    |> encode_compression_method()
   end
   
 end

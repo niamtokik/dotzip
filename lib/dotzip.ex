@@ -11,9 +11,18 @@ defmodule Dotzip do
     {local, central, e, rr}
   end
 
-  def read(file) do
+  def decode_file(file) do
     {:ok, data} = :file.read_file(file)
     decode(data)
+  end
+
+
+  def encode(_data) do
+    {:error, :not_supported}
+  end
+
+  def encode_file(_file) do
+    {:error, :not_supported}
   end
   
 end
