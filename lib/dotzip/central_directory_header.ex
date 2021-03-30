@@ -13,9 +13,40 @@ defmodule Dotzip.CentralDirectoryHeader do
   end
 
   defp version_made({:ok, data, << version::binary-size(2), rest::bitstring >>}) do
-    {:ok, Map.put(data, :version_made, version), rest}
+    {:ok, Map.put(data, :version_made, decode_version_made_type(version)), rest}
   end
 
+  defp decode_version_made_type(<<version::size(8), file_attribute::size(8)>>) do
+    # this algorithm seems false, at least for the version
+    # need to be investigated
+    attribute = case version do
+                  0 -> :msdos
+                  1 -> :amiga
+                  2 -> :openvms
+                  3 -> :unix
+                  4 -> :vmcms
+                  5 -> :atarist
+                  6 -> :hpfs
+                  7 -> :macintosh
+                  8 -> :zsystem
+                  9 -> :cpm
+                  10 -> :ntfs
+                  11 -> :mvs
+                  12 -> :vse
+                  13 -> :acorn
+                  14 -> :vfat
+                  15 -> :vms
+                  16 -> :beos
+                  17 -> :tandem
+                  18 -> :os400
+                  19 -> :osx
+                  _ -> :unused
+                end
+    major = version/10
+    minor = :erlang.rem(version, 10)
+    %{ :version => {major, minor}, :file_attribute => attribute }
+  end
+  
   defp encode_version_made({:ok, %{ :version_made => version_made } = data, buffer}) do
     {:ok, data, << buffer::bitstring, version_made::binary-size(2) >>}
   end
