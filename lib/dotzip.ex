@@ -1,8 +1,10 @@
 defmodule Dotzip do
   
   @moduledoc """
-  Elixir Implementation of ZIP File Format. https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT
-  """
+
+  Elixir Implementation of ZIP File Format.
+
+  """  
 
   def decode(data) do
     {:ok, local, rest} = Dotzip.LocalFileHeader.decode(data)

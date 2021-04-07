@@ -49,6 +49,14 @@ Dotzip.decode(file)
  * https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT
  * https://en.wikipedia.org/wiki/ZIP_(file_format)
 
+### Other implementation
+
+ * http://infozip.sourceforge.net/
+ * https://github.com/kuba--/zip
+ * https://github.com/zip-rs/zip
+ * https://github.com/Stuk/jszip
+ * https://github.com/srikanth-lingala/zip4j
+
 ## Trademarks
 
 > PKWARE, PKZIP, SecureZIP, and PKSFX are registered trademarks of
