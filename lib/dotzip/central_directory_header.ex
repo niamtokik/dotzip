@@ -1,5 +1,14 @@
 defmodule Dotzip.CentralDirectoryHeader do
 
+  @moduledoc """
+  `Dotzip.CentralDirectoryHeader` module is a low level module used to
+  decode and encode Local File Header data-structure. This module
+  should not be used by developers as it, and can be changed at
+  anytime. Only stable interfaces are `decode/1`, `decode/2`,
+  `encode/1` and `encode/2` functions. Generated data structure may
+  change during development phase.
+  """
+  
   def signature() do
     << 0x50, 0x4b, 0x01, 0x02 >>
   end
@@ -16,7 +25,7 @@ defmodule Dotzip.CentralDirectoryHeader do
     {:ok, Map.put(data, :version_made, decode_version_made_type(version)), rest}
   end
 
-  defp decode_version_made_type(<<version::size(8), file_attribute::size(8)>>) do
+  defp decode_version_made_type(<<version::size(8), _file_attribute::size(8)>>) do
     # this algorithm seems false, at least for the version
     # need to be investigated
     attribute = case version do
@@ -202,7 +211,7 @@ defmodule Dotzip.CentralDirectoryHeader do
   end
   
   def decode(data) when is_bitstring(data) do
-    {:ok, central_directory_header, rest} = signature(data)
+    signature(data)
     |> version_made()
     |> version_needed()
     |> purpose_flag()

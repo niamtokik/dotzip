@@ -79,7 +79,7 @@ defmodule Dotzip.EndCentralDirectory do
   end
   
   def decode(file) do
-    {:ok, end_central_directory, rest} = signature(file)
+     signature(file)
     |> number_disk()
     |> number_disk_start()
     |> total_entries_disk()

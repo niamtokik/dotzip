@@ -4,6 +4,11 @@ defmodule Dotzip.MixProject do
   def project do
     [
       app: :dotzip,
+      description: "ZIP format implementation in Elixir",
+      package: %{
+        licenses: ["MIT"],
+        links: %{ "GitHub" => "https://github.com/niamtokik/dotzip" }
+      },
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -20,6 +25,7 @@ defmodule Dotzip.MixProject do
 
   def application do
     [
+      mod: {DotzipApp, []},
       extra_applications: [:logger]
     ]
   end

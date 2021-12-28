@@ -6,17 +6,26 @@
 > is defined by this format and no specific implementation guidance is
 > provided. This document provides details on the storage format for
 > creating ZIP files.  Information is provided on the records and
-> fields that describe what a ZIP file is. -- from [official
-> specification
+> fields that describe what a ZIP file is. 
+>
+> -- from [official specification
 > file](https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT)
 
-Note: This project is a work in progress. Please don't use it in
-production.
+NOTE: This project is a work in progress. Please don't use it in
+production (even in staging). Things are moving, and nothing is
+stable. Many notes are present in `notes` directory, feel free to
+react.
+
+More information can be found in `notes/` directory. This code is
+generated using TDD and literate programming. All function or modules
+added must be documented (with examples at least) and tested before
+commit.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `dotzip` to your list of dependencies in `mix.exs`:
+If [available in Hex](https://hex.pm/docs/publish), the package can be
+installed by adding `dotzip` to your list of dependencies in
+`mix.exs`:
 
 ```elixir
 def deps do
@@ -70,4 +79,3 @@ Dotzip.decode(file)
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/dotzip](https://hexdocs.pm/dotzip).
-
