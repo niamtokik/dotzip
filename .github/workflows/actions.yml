@@ -1,0 +1,18 @@
+name: dotzip-actions
+on: [push]
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        otp: ['21.3', '22.2', '23.3', '24.1']
+        elixir: ['1.9.4', '1.12.3', '1.13.1']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with: 
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+      - run: mix deps.get
+      - run: mix compile
+      - run: mix test
