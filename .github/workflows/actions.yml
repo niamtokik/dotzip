@@ -3,16 +3,46 @@ on: [push]
 jobs:
   compile:
     runs-on: ubuntu-latest
+    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     strategy:
       matrix:
-        otp: ['21.3', '22.2', '23.3', '24.1']
-        elixir: ['1.9.4', '1.12.3', '1.13.1']
+        otp: ['22.2', '23.1', '24.1']
+        elixir: ['1.11.3', '1.12.3', '1.13.1']
     steps:
-      - uses: actions/checkout@v2
-      - uses: erlef/setup-beam@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Configure Erlang OTP and Elixir
+        uses: erlef/setup-beam@v1
         with: 
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
-      - run: mix deps.get
-      - run: mix compile
-      - run: mix test
+      
+      - name: Fetch dependencies
+        run: mix deps.get
+        
+      - name: Compile application
+        run: mix compile
+
+      - name: Test application
+        run: mix test
+
+      - name: Generate documentation
+        run: mix docs
+
+      - name: Upload documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: documentation
+          path: doc
+      
+      - name: Generate hex release
+        run: mix hex.build
+      
+      - name: Upload hex release
+        uses: actions/upload-artifact@v2
+        with:
+          name: hex
+          path: dotzip-*.tar
+
+        
